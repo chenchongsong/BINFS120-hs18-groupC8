@@ -20,7 +20,7 @@ feature {NONE} -- Initialization
 
 feature {AUTO_TASK} -- Cycle Detection
 
-	cycle_detection (graph: DIRECTED_GRAPH)
+	cycle_detection (graph: DIRECTED_GRAPH): BOOLEAN
 		do
 
 		end
