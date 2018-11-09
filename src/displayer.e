@@ -1,5 +1,5 @@
 note
-	description: "Summary description for {DISPLAYER}."
+	description: "A class for graphviz text file generation"
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
@@ -21,8 +21,11 @@ feature {NONE} -- Initialization
 feature {ANY}
 
 	to_graphviz_format (graph: DIRECTED_GRAPH)
+			-- given a directed graph
+			-- generate the corresponding text file
+			-- for GraphViz to read and display the graph
 		do
-			
+
 		end
 
 end
