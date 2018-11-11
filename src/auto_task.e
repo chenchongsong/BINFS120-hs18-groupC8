@@ -19,6 +19,12 @@ feature {NONE} -- Initialization
 			create displayer.make
 			create algorithm.make
 			create graph.make
+		ensure
+			converter /= Void
+			displayer /= Void
+			algorithm /= Void
+			graph /= Void
+
 		end
 
 feature {NONE}
@@ -35,24 +41,32 @@ feature {ANY}
 
 	add_element (element_name: STRING)
 			-- add an element
+		require
+			name_not_void: element_name /= Void
 		do
 
 		end
 
 	add_constraint (element_name_1, element_name_2: STRING)
 			-- add a constraint
+		require
+			name_not_void: element_name_1 /= Void and element_name_2 /= Void
 		do
 
 		end
 
 	delete_element (element_name: STRING)
 			-- delete an element and associated constraints
+		require
+			name_not_void: element_name /= Void
 		do
 
 		end
 
 	delete_constraint (element_name_1, element_name_2: STRING)
 			-- delete the constraint element_1->element_2 if it exists
+		require
+			name_not_void: element_name_1 /= Void and element_name_2 /= Void
 		do
 
 		end
@@ -64,6 +78,13 @@ feature {ANY}
 		do
 			create sorted_list.make
 			Result := sorted_list
+		end
+
+	display
+			-- call the DISPLAYER class
+			-- to generate GraphViz format text file
+		do
+
 		end
 
 feature {NONE}

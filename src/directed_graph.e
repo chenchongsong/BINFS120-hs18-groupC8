@@ -17,6 +17,8 @@ feature {NONE} -- Initialization
 		do
 			create nodes.make
 			create successors.make_empty
+		ensure
+			nodes.is_empty
 		end
 
 feature {NONE}
@@ -34,12 +36,17 @@ feature {ANY}
 
 	add_node (node: INTEGER)
 			-- append an INTEGER at the end of "nodes" list
+		require
+			positive_node_id: node > 0
 		do
 
 		end
 
-	add_edge (predecessor, successor: STRING)
+	add_edge (predecessor, successor: INTEGER)
 			-- add an edge predecessor->successor to the graph
+		require
+			positive_node_id: predecessor > 0 and successor > 0
+			not_self_cycle: predecessor /= successor
 		do
 
 		end
@@ -47,13 +54,17 @@ feature {ANY}
 	delete_node (node: INTEGER)
 			-- delete an node from the "nodes" list
 			-- delete all related edges from the adjacency list
+		require
+			positive_node_id: node > 0
 		do
 
 		end
 
-	delete_edge (predecessor, successor: STRING)
+	delete_edge (predecessor, successor: INTEGER)
 			-- if edge "predecessor->successor" exists
 			-- delete it from the graph
+		require
+			positive_node_id: predecessor > 0 and successor > 0
 		do
 
 		end

@@ -25,6 +25,8 @@ feature {AUTO_TASK} -- Cycle Detection
 			-- with Depth First Search
 		do
 
+		ensure
+			result_not_void: Result /= Void
 		end
 
 feature {AUTO_TASK} -- Topological Sort
@@ -36,6 +38,8 @@ feature {AUTO_TASK} -- Topological Sort
 		do
 			create sorted_list.make
 			Result := sorted_list
+		ensure
+			result_not_void: Result /= Void
 		end
 
 end
