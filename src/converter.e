@@ -17,7 +17,7 @@ feature {NONE} -- Initialization
 		do
 			largest_integer := 0
 			create name2id_table.make(100)
-			create id2name_array.make_empty
+			create id2name_array.make_filled("", 1, 100)
 		ensure
 			largest_integer = 0
 		end
@@ -39,14 +39,14 @@ feature {ANY}
 		require
 			check_length: name.count <= 100
 		do
-			Result := 0 -- TODO
+			Result := name2id_table.item(name)
 		end
 
 	id2name (id: INTEGER): STRING
 			-- translate from id to name using id2name_array
 			-- return empty string if the id is invalid
 		do
-			Result := "" -- TODO
+			Result := id2name_array[id]
 		end
 
 	insert_name (name: STRING)
@@ -54,7 +54,11 @@ feature {ANY}
 		require
 			check_length: name.count <= 100
 		do
-
+			if not name2id_table.has (name) then
+				largest_integer := largest_integer + 1
+				name2id_table.put (largest_integer, name)
+				id2name_array[largest_integer] := name
+			end
 		ensure
 			largest_integer = old largest_integer
 			or largest_integer = old largest_integer + 1
@@ -66,7 +70,10 @@ feature {ANY}
 		require
 			check_length: name.count <= 100
 		do
-
+			if name2id_table.has (name) then
+				id2name_array.item (name2id_table.item (name)) := ""
+				name2id_table.remove (name)
+			end
 		ensure
 			largest_integer = old largest_integer
 		end

@@ -44,7 +44,13 @@ feature {ANY}
 		require
 			name_not_void: element_name /= Void
 		do
-
+			if converter.name2id (element_name) = 0 then
+				converter.insert_name (element_name)
+				print(converter.name2id (element_name))
+				print("%N")
+			else
+				print("Element Already Exists%N")
+			end
 		end
 
 	add_constraint (element_name_1, element_name_2: STRING)
@@ -60,7 +66,7 @@ feature {ANY}
 		require
 			makefile.is_readable
 		do
-			
+
 		end
 
 	delete_element (element_name: STRING)
@@ -68,7 +74,13 @@ feature {ANY}
 		require
 			name_not_void: element_name /= Void
 		do
-
+			if converter.name2id (element_name) /= 0 then
+				converter.delete_name (element_name)
+				print(converter.name2id (element_name))
+				print("%N")
+			else
+				print("Element Not Exists%N")
+			end
 		end
 
 	delete_constraint (element_name_1, element_name_2: STRING)

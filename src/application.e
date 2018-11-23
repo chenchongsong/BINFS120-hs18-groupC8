@@ -16,9 +16,17 @@ feature {NONE} -- Initialization
 
 	make
 			-- Run application.
+		local
+			auto_task: AUTO_TASK
 		do
 			--| Add your code here
-			print ("Hello Eiffel World!%N")
+			print ("==================%N")
+			create auto_task.make
+			auto_task.add_element ("1")
+			auto_task.add_element ("1")
+			auto_task.delete_element ("1")
+			auto_task.delete_element ("1")
+			auto_task.add_element ("1")
 		end
 
 end
