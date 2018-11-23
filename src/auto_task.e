@@ -55,6 +55,14 @@ feature {ANY}
 
 		end
 
+	add_makefile(makefile: FILE)
+			-- add nodes and constraints from a makefile
+		require
+			makefile.is_readable
+		do
+			
+		end
+
 	delete_element (element_name: STRING)
 			-- delete an element and associated constraints
 		require
