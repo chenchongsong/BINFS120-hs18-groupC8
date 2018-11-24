@@ -27,11 +27,13 @@ feature {NONE} -- Initialization
 			--auto_task.delete_element ("1")
 			--auto_task.delete_element ("1")
 			--auto_task.add_element ("1")
-			auto_task.add_element ("1")
-			auto_task.add_element ("2")
-			auto_task.add_constraint ("1", "2")
-			auto_task.delete_constraint ("1", "2")
-			auto_task.delete_constraint ("1", "2")
+
+			auto_task.add_element ("happy")
+			auto_task.add_element ("sad")
+			auto_task.add_constraint ("happy", "sad")
+			auto_task.add_constraint ("happy", "happy")
+			--auto_task.delete_constraint ("1", "2")
+			auto_task.display
 		end
 
 end

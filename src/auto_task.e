@@ -66,13 +66,15 @@ feature {ANY}
 				if not check_constraint_existence(element_name_1, element_name_2) then
 					element_id_1 := converter.name2id (element_name_1)
 					element_id_2 := converter.name2id (element_name_2)
-
-					print(element_id_1)
-					print(": added as part of constraint%N")
-					print(element_id_2)
-					print(": added as part of constraint%N")
-
-					graph.add_edge (element_id_1, element_id_2)
+					if element_id_1 /= element_id_2 then
+						print(element_id_1)
+						print(": added as part of constraint%N")
+						print(element_id_2)
+						print(": added as part of constraint%N")
+						graph.add_edge (element_id_1, element_id_2)
+					else
+						print("Self-Loop Not Allowed")
+					end
 				else
 					print("Constraint Already Exists%N")
 				end
@@ -136,7 +138,7 @@ feature {ANY}
 			-- call the DISPLAYER class
 			-- to generate GraphViz format text file
 		do
-			displayer.to_graphviz_format (graph)
+			displayer.to_graphviz_format (graph, converter)
 		end
 
 feature {NONE}

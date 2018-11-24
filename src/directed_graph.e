@@ -15,11 +15,14 @@ feature {NONE} -- Initialization
 	make
 			-- Initialization for `Current'.
 		do
-			create successors.make_filled(create {LINKED_LIST[INTEGER]}.make, 1, 100)
 			create deleted.make_filled (false, 1, 100)
+			create successors.make_filled(create {LINKED_LIST[INTEGER]}.make, 1, 100)
+			across 1 |..| 100 as predecessor_iter loop
+				successors.put (create {LINKED_LIST[INTEGER]}.make, predecessor_iter.item)
+			end
 		end
 
-feature {NONE}
+feature {DISPLAYER, ALGORITHM}
 
 	largest_node: INTEGER
 			-- the upperbound of all node values in successors ARRAY
@@ -30,11 +33,40 @@ feature {NONE}
 			-- successors[100] = [101, 102] means that
 			-- there are two edges 100->101, 100->102
 
+feature {NONE}
 	deleted: ARRAY [BOOLEAN]
 			-- corresponding entry will be marked as deleted (true)
 			-- after a node is deleted
 
-feature {ANY}
+feature {DISPLAYER, ALGORITHM, AUTO_TASK}
+	check_node_existence (node: INTEGER): BOOLEAN
+		require
+			non_negative_node: node >= 0
+		do
+			if node > largest_node or node = 0 then
+				Result := false
+			else
+				if deleted[node] then
+					Result := false
+				else
+					Result := true
+				end
+			end
+		end
+
+	check_edge_existence (predecessor, successor: INTEGER): BOOLEAN
+		require
+			non_negative_nodes: predecessor >= 0 and successor >= 0
+		do
+			if not check_node_existence (predecessor)
+			or not check_node_existence (successor) then
+				Result := false
+			else
+				Result := successors[predecessor].has (successor)
+			end
+		end
+
+feature {AUTO_TASK}
 
 	set_largest_node (new_largest_node: INTEGER)
 			-- append an INTEGER at the end of "nodes" list
@@ -49,8 +81,10 @@ feature {ANY}
 		require
 			positive_node_id: predecessor > 0 and successor > 0
 			not_self_cycle: predecessor /= successor
+		local
+			list : LINKED_LIST [INTEGER]
 		do
-			successors[predecessor].extend (successor)
+			successors.item (predecessor).extend (successor)
 		end
 
 	delete_node (node: INTEGER)
@@ -80,33 +114,6 @@ feature {ANY}
 				else
 					successors[predecessor].forth
 				end
-			end
-		end
-
-	check_node_existence (node: INTEGER): BOOLEAN
-		require
-			non_negative_node: node >= 0
-		do
-			if node > largest_node or node = 0 then
-				Result := false
-			else
-				if deleted[node] then
-					Result := false
-				else
-					Result := true
-				end
-			end
-		end
-
-	check_edge_existence (predecessor, successor: INTEGER): BOOLEAN
-		require
-			non_negative_nodes: predecessor >= 0 and successor >= 0
-		do
-			if not check_node_existence (predecessor)
-			or not check_node_existence (successor) then
-				Result := false
-			else
-				Result := successors[predecessor].has (successor)
 			end
 		end
 end
