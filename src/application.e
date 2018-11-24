@@ -22,11 +22,16 @@ feature {NONE} -- Initialization
 			--| Add your code here
 			print ("==================%N")
 			create auto_task.make
+			--auto_task.add_element ("1")
+			--auto_task.add_element ("1")
+			--auto_task.delete_element ("1")
+			--auto_task.delete_element ("1")
+			--auto_task.add_element ("1")
 			auto_task.add_element ("1")
-			auto_task.add_element ("1")
-			auto_task.delete_element ("1")
-			auto_task.delete_element ("1")
-			auto_task.add_element ("1")
+			auto_task.add_element ("2")
+			auto_task.add_constraint ("1", "2")
+			auto_task.delete_constraint ("1", "2")
+			auto_task.delete_constraint ("1", "2")
 		end
 
 end

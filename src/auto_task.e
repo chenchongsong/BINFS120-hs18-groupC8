@@ -44,10 +44,11 @@ feature {ANY}
 		require
 			name_not_void: element_name /= Void
 		do
-			if converter.name2id (element_name) = 0 then
+			if not check_element_existence (element_name) then
 				converter.insert_name (element_name)
 				print(converter.name2id (element_name))
-				print("%N")
+				print(": added%N")
+				graph.set_largest_node (converter.name2id (element_name))
 			else
 				print("Element Already Exists%N")
 			end
@@ -57,8 +58,27 @@ feature {ANY}
 			-- add a constraint
 		require
 			name_not_void: element_name_1 /= Void and element_name_2 /= Void
+		local
+			element_id_1, element_id_2: INTEGER
 		do
+			if check_element_existence(element_name_1)
+			and check_element_existence(element_name_2) then
+				if not check_constraint_existence(element_name_1, element_name_2) then
+					element_id_1 := converter.name2id (element_name_1)
+					element_id_2 := converter.name2id (element_name_2)
 
+					print(element_id_1)
+					print(": added as part of constraint%N")
+					print(element_id_2)
+					print(": added as part of constraint%N")
+
+					graph.add_edge (element_id_1, element_id_2)
+				else
+					print("Constraint Already Exists%N")
+				end
+			else
+				print("Element Not Exists%N")
+			end
 		end
 
 	add_makefile(makefile: FILE)
@@ -66,18 +86,22 @@ feature {ANY}
 		require
 			makefile.is_readable
 		do
-
+			-- TODO
 		end
 
 	delete_element (element_name: STRING)
 			-- delete an element and associated constraints
 		require
 			name_not_void: element_name /= Void
+		local
+			element_id: INTEGER
 		do
-			if converter.name2id (element_name) /= 0 then
+			if check_element_existence (element_name) then
+				element_id := converter.name2id (element_name)
+				graph.delete_node (element_id)
 				converter.delete_name (element_name)
 				print(converter.name2id (element_name))
-				print("%N")
+				print(": deleted%N")
 			else
 				print("Element Not Exists%N")
 			end
@@ -87,8 +111,16 @@ feature {ANY}
 			-- delete the constraint element_1->element_2 if it exists
 		require
 			name_not_void: element_name_1 /= Void and element_name_2 /= Void
+		local
+			element_id_1, element_id_2: INTEGER
 		do
-
+			if check_constraint_existence(element_name_1, element_name_2) then
+				element_id_1 := converter.name2id (element_name_1)
+				element_id_2 := converter.name2id (element_name_2)
+				graph.delete_edge (element_id_1, element_id_2)
+			else
+				print("Constraint Not Exists%N")
+			end
 		end
 
 	topo_sort: LINKED_LIST [STRING]
@@ -104,7 +136,7 @@ feature {ANY}
 			-- call the DISPLAYER class
 			-- to generate GraphViz format text file
 		do
-
+			displayer.to_graphviz_format (graph)
 		end
 
 feature {NONE}
@@ -112,13 +144,26 @@ feature {NONE}
 	check_length (element_name: STRING): BOOLEAN
 			-- check whether the element_name is within length constaint
 		do
-
+			Result := element_name.count > 100
 		end
 
-	check_existence (element_name: STRING): BOOLEAN
+	check_element_existence (element_name: STRING): BOOLEAN
 			-- check whether an element is added previously and not deleted so far
+		local
+			element_id: INTEGER
 		do
-
+			element_id := converter.name2id (element_name)
+			Result := graph.check_node_existence (element_id)
 		end
 
+	check_constraint_existence (element_name_1, element_name_2: STRING): BOOLEAN
+			-- check whether a constraint is added previously
+			-- and not deleted so far
+		local
+			element_id_1, element_id_2: INTEGER
+		do
+			element_id_1 := converter.name2id (element_name_1)
+			element_id_2 := converter.name2id (element_name_2)
+			Result := graph.check_edge_existence (element_id_1, element_id_2)
+		end
 end
