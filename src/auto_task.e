@@ -128,9 +128,29 @@ feature {ANY}
 	topo_sort: LINKED_LIST [STRING]
 			-- call the ALGORITHM class to performa cycle detection
 			-- and then topological sort
-		local sorted_list: LINKED_LIST [STRING]
+			-- return an empty linked list if cycle found
+			-- return a sorted linked list of element names if no cycle
+		local
+			sorted_list: LINKED_LIST [STRING]
+			cycle_elements: LINKED_LIST [INTEGER]
 		do
 			create sorted_list.make
+
+			cycle_elements := algorithm.cycle_detection(graph)
+			if cycle_elements.is_empty then
+				-- compute sorted_list with topo sort
+				-- TODO
+			else
+				across cycle_elements as element_iter
+				loop
+					print(converter.id2name(element_iter.item))
+					print(" -> ")
+				end
+				cycle_elements.start
+				print(converter.id2name(cycle_elements.item))
+				print("%N")
+			end
+
 			Result := sorted_list
 		end
 

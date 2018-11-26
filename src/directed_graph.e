@@ -33,7 +33,6 @@ feature {DISPLAYER, ALGORITHM}
 			-- successors[100] = [101, 102] means that
 			-- there are two edges 100->101, 100->102
 
-feature {NONE}
 	deleted: ARRAY [BOOLEAN]
 			-- corresponding entry will be marked as deleted (true)
 			-- after a node is deleted
