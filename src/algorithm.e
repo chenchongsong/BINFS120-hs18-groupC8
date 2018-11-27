@@ -16,7 +16,7 @@ feature {NONE} -- Initialization
 			-- Initialization for `Current'.
 		do
 			create dfs_visited.make_empty
-			create dfs_parent.make_empty
+			create dfs_in_stack.make_empty
 			create dfs_stack.make
 			create dfs_cycle_elements.make
 
@@ -24,18 +24,20 @@ feature {NONE} -- Initialization
 			create predecessor_count.make_empty
 		end
 
-feature {AUTO_TASK} -- Cycle Detection
+feature {AUTO_TASK}
+	-- Cycle Detection with Tarjan Algorithm
+	-- (by finding strongly connected component)
 
 	cycle_detection_initialize (graph: DIRECTED_GRAPH)
 		do
-			create dfs_visited.make(1, graph.largest_node)
-			create dfs_parent.make(1, graph.largest_node)
+			create dfs_visited.make_filled(false, 1, graph.largest_node)
+			create dfs_in_stack.make_filled(false, 1, graph.largest_node)
 			create dfs_stack.make
 			create dfs_cycle_elements.make
 		end
 
 	dfs_visited: ARRAY [BOOLEAN]
-	dfs_parent: ARRAY [INTEGER]
+	dfs_in_stack: ARRAY [BOOLEAN]
 	dfs_stack: LINKED_LIST [INTEGER]
 	dfs_cycle_elements: LINKED_LIST [INTEGER]
 
@@ -69,13 +71,14 @@ feature {AUTO_TASK} -- Cycle Detection
 	depth_first_search (graph: DIRECTED_GRAPH; node: INTEGER): BOOLEAN
 			-- find cycle in the directed graph
 			-- recursively using Depth First Search
-			-- (return true if found)
+			-- if cycle found, return true and print cycle to console
 		do
 --			print("DFS: ")
 --			print(node)
 --			print("%N")
 			dfs_visited[node] := true
 			dfs_stack.extend(node)
+			dfs_in_stack[node] := true
 			Result := false
 
 			across graph.successors[node] as successor_iter
@@ -85,7 +88,7 @@ feature {AUTO_TASK} -- Cycle Detection
 --				print("%N")
 				if Result = false then
 					-- print("HERE: cycle not found%N")
-					if dfs_visited[successor_iter.item] = true then
+					if dfs_in_stack[successor_iter.item] then
 						-- cycle found
 						print("HERE: cycle found!%N")
 						from
@@ -106,7 +109,7 @@ feature {AUTO_TASK} -- Cycle Detection
 
 						Result := true
 					else
-						if graph.deleted[node] = false then
+						if not graph.deleted[node] then
 							-- print("HERE: dfs deeper%N")
 							Result := Result or depth_first_search(graph, successor_iter.item)
 						end
@@ -115,7 +118,10 @@ feature {AUTO_TASK} -- Cycle Detection
 			end
 			dfs_stack.finish
 			dfs_stack.remove
+			dfs_in_stack[node] := false
 		end
+
+
 
 feature {AUTO_TASK} -- Topological Sort
 
@@ -142,8 +148,8 @@ feature {AUTO_TASK} -- Topological Sort
 			-- initialize sorted_list
 			across predecessor_count as successor_iter
 			loop
---				print(successor_iter.target_index.out + "]: " + successor_iter.item.out)
---				print("%N")
+				print(successor_iter.target_index.out + "]: " + successor_iter.item.out)
+				print("%N")
 				if not graph.deleted[successor_iter.target_index]
 				and successor_iter.item = 0 then
 					sorted_list.extend(successor_iter.target_index)
@@ -166,7 +172,7 @@ feature {AUTO_TASK} -- Topological Sort
 				loop
 					predecessor_count[successor_iter.item] := predecessor_count[successor_iter.item] - 1
 					if predecessor_count[successor_iter.item] = 0 then
-						sorted_list.extend(sorted_list.item)
+						sorted_list.extend(successor_iter.item)
 					end
 				end
 

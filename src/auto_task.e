@@ -140,7 +140,7 @@ feature {ANY}
 
 			cycle_elements_id := algorithm.cycle_detection(graph)
 			if cycle_elements_id.is_empty then
-				print("Cycle Not Found!")
+				print("Cycle Not Found!%N")
 			else
 				print("Cycle Found:%N")
 				across cycle_elements_id as element_iter
