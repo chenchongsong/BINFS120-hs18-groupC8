@@ -128,30 +128,39 @@ feature {ANY}
 	topo_sort: LINKED_LIST [STRING]
 			-- call the ALGORITHM class to performa cycle detection
 			-- and then topological sort
-			-- return an empty linked list if cycle found
-			-- return a sorted linked list of element names if no cycle
+			-- return a sorted linked list of all element names if no cycle
+			-- return a sorted linked list of element names from non-cyclic parts if cycle exists
 		local
-			sorted_list: LINKED_LIST [STRING]
-			cycle_elements: LINKED_LIST [INTEGER]
+			sorted_list_id: LINKED_LIST [INTEGER]
+			sorted_list_name: LINKED_LIST [STRING]
+			cycle_elements_id: LINKED_LIST [INTEGER]
 		do
-			create sorted_list.make
+			create sorted_list_id.make
+			create sorted_list_name.make
 
-			cycle_elements := algorithm.cycle_detection(graph)
-			if cycle_elements.is_empty then
-				-- compute sorted_list with topo sort
-				-- TODO
+			cycle_elements_id := algorithm.cycle_detection(graph)
+			if cycle_elements_id.is_empty then
+				print("Cycle Not Found!")
 			else
-				across cycle_elements as element_iter
+				print("Cycle Found:%N")
+				across cycle_elements_id as element_iter
 				loop
 					print(converter.id2name(element_iter.item))
 					print(" -> ")
 				end
-				cycle_elements.start
-				print(converter.id2name(cycle_elements.item))
+				cycle_elements_id.start
+				print(converter.id2name(cycle_elements_id.item))
 				print("%N")
 			end
 
-			Result := sorted_list
+			-- compute sorted_list with topo sort
+			sorted_list_id := algorithm.topo_sort (graph)
+			across sorted_list_id as id_iter
+			loop
+				sorted_list_name.extend(converter.id2name(id_iter.item))
+			end
+
+			Result := sorted_list_name
 		end
 
 	display

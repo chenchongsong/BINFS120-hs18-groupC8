@@ -19,6 +19,9 @@ feature {NONE} -- Initialization
 			create dfs_parent.make_empty
 			create dfs_stack.make
 			create dfs_cycle_elements.make
+
+			create sorted_list.make
+			create predecessor_count.make_empty
 		end
 
 feature {AUTO_TASK} -- Cycle Detection
@@ -68,23 +71,23 @@ feature {AUTO_TASK} -- Cycle Detection
 			-- recursively using Depth First Search
 			-- (return true if found)
 		do
-			-- print("DFS: ")
-			-- print(node)
-			-- print("%N")
+--			print("DFS: ")
+--			print(node)
+--			print("%N")
 			dfs_visited[node] := true
 			dfs_stack.extend(node)
 			Result := false
 
 			across graph.successors[node] as successor_iter
 			loop
-				-- print("successor: ")
-				-- print(successor_iter.item)
-				-- print("%N")
+--				print("successor: ")
+--				print(successor_iter.item)
+--				print("%N")
 				if Result = false then
 					-- print("HERE: cycle not found%N")
 					if dfs_visited[successor_iter.item] = true then
 						-- cycle found
-						-- print("HERE: cycle found!%N")
+						print("HERE: cycle found!%N")
 						from
 							dfs_stack.start
 						until
@@ -116,12 +119,60 @@ feature {AUTO_TASK} -- Cycle Detection
 
 feature {AUTO_TASK} -- Topological Sort
 
-	topo_sort (graph: DIRECTED_GRAPH): LINKED_LIST [INTEGER]
-			-- topological sort based on Kahn's algorithm
-		local
-			sorted_list: LINKED_LIST [INTEGER]
+	sorted_list: LINKED_LIST [INTEGER]
+	predecessor_count: ARRAY [INTEGER]
+
+	topo_sort_initialize (graph: DIRECTED_GRAPH)
 		do
 			create sorted_list.make
+			create predecessor_count.make(1, graph.largest_node)
+
+			-- compute predecessor_count array
+			across graph.successors as predecessor_iter
+			loop
+				if not graph.deleted[predecessor_iter.target_index] then
+					across graph.successors[predecessor_iter.target_index]
+					as successor_iter
+					loop
+						predecessor_count[successor_iter.item]:=predecessor_count[successor_iter.item]+1
+					end
+				end
+			end
+
+			-- initialize sorted_list
+			across predecessor_count as successor_iter
+			loop
+--				print(successor_iter.target_index.out + "]: " + successor_iter.item.out)
+--				print("%N")
+				if not graph.deleted[successor_iter.target_index]
+				and successor_iter.item = 0 then
+					sorted_list.extend(successor_iter.target_index)
+				end
+			end
+		end
+
+	topo_sort (graph: DIRECTED_GRAPH): LINKED_LIST [INTEGER]
+			-- topological sort based on Kahn's algorithm
+		do
+			topo_sort_initialize (graph)
+			from
+				sorted_list.start
+			until
+				sorted_list.exhausted
+			loop
+				-- take sorted_list.item as precedessor
+				across graph.successors[sorted_list.item]
+				as successor_iter
+				loop
+					predecessor_count[successor_iter.item] := predecessor_count[successor_iter.item] - 1
+					if predecessor_count[successor_iter.item] = 0 then
+						sorted_list.extend(sorted_list.item)
+					end
+				end
+
+				sorted_list.forth
+			end
+
 			Result := sorted_list
 		ensure
 			result_not_void: Result /= Void
