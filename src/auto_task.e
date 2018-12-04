@@ -83,12 +83,69 @@ feature {ANY}
 			end
 		end
 
-	add_makefile(makefile: FILE)
+	add_makefile(makefile: PLAIN_TEXT_FILE)
 			-- add nodes and constraints from a makefile
 		require
 			makefile.is_readable
+		local
+			line: STRING
+			words: LIST [STRING]
+			element_name: STRING
+			element_name_1: STRING
+			element_name_2: STRING
 		do
-			-- TODO
+			-- add elements
+			from
+				makefile.start
+				makefile.readline
+			until
+				makefile.exhausted
+			loop
+				line := makefile.last_string
+				words := line.split (' ')
+				across words as word_iter
+				loop
+					if word_iter.item.ends_with (":") then
+						add_element(word_iter.item.substring(1, word_iter.item.count-1))
+					else
+						add_element (word_iter.item)
+					end
+--					print(word_iter.item + "%N")
+				end
+				makefile.readline
+			end
+
+			-- add constraints
+			from
+				makefile.start
+				makefile.readline
+			until
+				makefile.exhausted
+			loop
+				line := makefile.last_string
+				words := line.split (' ')
+				if words.count > 0 then
+					if words.first.ends_with (":") then
+						element_name_1 := words.first.substring(1, words.first.count-1)
+						from
+							words.start
+							words.forth
+						until
+							words.exhausted
+						loop
+							element_name_2 := words.item
+--							print(element_name_1)
+--							print("%N")
+--							print(element_name_2 + "%N")
+							add_constraint(element_name_1, element_name_2)
+							words.forth
+						end
+					else
+						print("Incorrect Makefile Format!%N")
+					end
+				end
+				makefile.readline
+			end
 		end
 
 	delete_element (element_name: STRING)
