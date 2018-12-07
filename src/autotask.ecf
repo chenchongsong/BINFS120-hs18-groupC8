@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-16-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-16-0 http://www.eiffel.com/developers/xml/configuration-1-16-0.xsd" name="autotask" uuid="DCE2BA8B-6083-4C2C-8A99-872BA894BD49">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-18-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-18-0 http://www.eiffel.com/developers/xml/configuration-1-18-0.xsd" name="autotask" uuid="DCE2BA8B-6083-4C2C-8A99-872BA894BD49">
 	<target name="autotask">
-		<root feature="make" class="APPLICATION"/>
+		<root class="APPLICATION" feature="make"/>
 		<file_rule>
-			<exclude>/\.git$</exclude>
-			<exclude>/\.svn$</exclude>
 			<exclude>/CVS$</exclude>
 			<exclude>/EIFGENs$</exclude>
+			<exclude>/\.git$</exclude>
+			<exclude>/\.svn$</exclude>
 		</file_rule>
-		<option warning="true">
+		<option warning="true" manifest_array_type="mismatch_warning">
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>
 		<setting name="console_application" value="true"/>
-		<precompile name="base_pre" location="$ISE_PRECOMP/base-scoop-safe.ecf"/>
-		<library name="base" location="$ISE_LIBRARY/library/base/base.ecf"/>
-		<cluster name="autotask" location=".\" recursive="true"/>
+		<capability>
+			<catcall_detection support="none"/>
+			<concurrency support="scoop"/>
+			<void_safety support="all"/>
+		</capability>
+		<precompile name="base_pre" location="$ISE_PRECOMP\base-scoop-safe.ecf"/>
+		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
+		<library name="testing" location="$ISE_LIBRARY\library\testing\testing-safe.ecf"/>
+		<cluster name="autotask" location=".\" recursive="true">
+			<tests name="tests" location="C:\sc-hs18-groupC8\sc-hs18-groupC8\tests\"/>
+		</cluster>
 	</target>
 </system>

@@ -22,7 +22,7 @@ feature {NONE} -- Initialization
 			end
 		end
 
-feature {DISPLAYER, ALGORITHM}
+feature {DISPLAYER, ALGORITHM, TEST_DIRECTED_GRAPH}
 
 	largest_node: INTEGER
 			-- the upperbound of all node values in successors ARRAY
@@ -37,7 +37,7 @@ feature {DISPLAYER, ALGORITHM}
 			-- corresponding entry will be marked as deleted (true)
 			-- after a node is deleted
 
-feature {DISPLAYER, ALGORITHM, AUTO_TASK}
+feature {DISPLAYER, ALGORITHM, AUTO_TASK, TEST_DIRECTED_GRAPH}
 	check_node_existence (node: INTEGER): BOOLEAN
 		require
 			non_negative_node: node >= 0
@@ -65,7 +65,7 @@ feature {DISPLAYER, ALGORITHM, AUTO_TASK}
 			end
 		end
 
-feature {AUTO_TASK}
+feature {AUTO_TASK, TEST_DIRECTED_GRAPH}
 
 	set_largest_node (new_largest_node: INTEGER)
 			-- append an INTEGER at the end of "nodes" list

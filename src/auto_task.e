@@ -105,10 +105,12 @@ feature {ANY}
 				words := line.split (' ')
 				across words as word_iter
 				loop
-					if word_iter.item.ends_with (":") then
-						add_element(word_iter.item.substring(1, word_iter.item.count-1))
-					else
-						add_element (word_iter.item)
+					if word_iter.item.count > 0 then
+						if word_iter.item.ends_with (":") then
+							add_element(word_iter.item.substring(1, word_iter.item.count-1))
+						else
+							add_element (word_iter.item)
+						end
 					end
 --					print(word_iter.item + "%N")
 				end

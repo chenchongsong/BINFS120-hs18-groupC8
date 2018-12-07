@@ -22,7 +22,7 @@ feature {NONE} -- Initialization
 			largest_integer = 0
 		end
 
-feature {NONE}
+feature {TEST_CONVERTER}
 
 	largest_integer: INTEGER
 			-- the largest id used so far
