@@ -87,10 +87,8 @@ feature {AUTO_TASK, TEST_ALGORITHM}
 --				print(successor_iter.item)
 --				print("%N")
 				if Result = false then
-					-- print("HERE: cycle not found%N")
 					if dfs_in_stack[successor_iter.item] then
 						-- cycle found
-						print("HERE: cycle found!%N")
 						from
 							dfs_stack.start
 						until
@@ -110,7 +108,6 @@ feature {AUTO_TASK, TEST_ALGORITHM}
 						Result := true
 					else
 						if not graph.deleted[node] then
-							-- print("HERE: dfs deeper%N")
 							Result := Result or depth_first_search(graph, successor_iter.item)
 						end
 					end
@@ -140,7 +137,9 @@ feature {AUTO_TASK, TEST_ALGORITHM} -- Topological Sort
 					across graph.successors[predecessor_iter.target_index]
 					as successor_iter
 					loop
-						predecessor_count[successor_iter.item]:=predecessor_count[successor_iter.item]+1
+						if not graph.deleted[successor_iter.item] then
+							predecessor_count[successor_iter.item]:=predecessor_count[successor_iter.item]+1
+						end
 					end
 				end
 			end
@@ -148,8 +147,6 @@ feature {AUTO_TASK, TEST_ALGORITHM} -- Topological Sort
 			-- initialize sorted_list
 			across predecessor_count as successor_iter
 			loop
-				print(successor_iter.target_index.out + "]: " + successor_iter.item.out)
-				print("%N")
 				if not graph.deleted[successor_iter.target_index]
 				and successor_iter.item = 0 then
 					sorted_list.extend(successor_iter.target_index)
@@ -170,9 +167,11 @@ feature {AUTO_TASK, TEST_ALGORITHM} -- Topological Sort
 				across graph.successors[sorted_list.item]
 				as successor_iter
 				loop
-					predecessor_count[successor_iter.item] := predecessor_count[successor_iter.item] - 1
-					if predecessor_count[successor_iter.item] = 0 then
-						sorted_list.extend(successor_iter.item)
+					if not graph.deleted[successor_iter.item] then
+						predecessor_count[successor_iter.item] := predecessor_count[successor_iter.item] - 1
+						if predecessor_count[successor_iter.item] = 0 then
+							sorted_list.extend(successor_iter.item)
+						end
 					end
 				end
 

@@ -19,7 +19,7 @@ feature {NONE} -- Initialization
 		local
 			auto_task: AUTO_TASK
 			topo_result: LINKED_LIST [STRING]
-			makefile: PLAIN_TEXT_FILE
+			input_makefile: PLAIN_TEXT_FILE
 		do
 			--| Add your code here
 			print ("==================%N")
@@ -40,8 +40,8 @@ feature {NONE} -- Initialization
 --			--auto_task.add_constraint ("root", "normal")
 --			--auto_task.delete_constraint ("1", "2")
 
-			create makefile.make_open_read("input_makefile.txt")
-			auto_task.add_makefile(makefile)
+			create input_makefile.make_open_read("input_makefile.txt")
+			auto_task.add_makefile(input_makefile)
 			topo_result := auto_task.topo_sort
 			print("Topo Sort Resut:%N")
 			across topo_result as element_iter

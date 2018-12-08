@@ -53,7 +53,7 @@ feature -- Test routines
 			output_file: PLAIN_TEXT_FILE
 			output_file_name: STRING
 		do
-			output_file_name := "output_graph_test.txt"
+			output_file_name := "output_graph_test_displayer.txt"
 			displayer.to_graphviz_format (graph, converter, output_file_name)
 
 			-- examine output file

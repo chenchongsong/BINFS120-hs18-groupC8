@@ -112,7 +112,6 @@ feature {ANY}
 							add_element (word_iter.item)
 						end
 					end
---					print(word_iter.item + "%N")
 				end
 				makefile.readline
 			end
@@ -136,18 +135,16 @@ feature {ANY}
 							words.exhausted
 						loop
 							element_name_2 := words.item
---							print(element_name_1)
---							print("%N")
---							print(element_name_2 + "%N")
 							add_constraint(element_name_1, element_name_2)
 							words.forth
 						end
 					else
-						print("Incorrect Makefile Format!%N")
+						print("Ignored: This line has incorrect makefile format!%N")
 					end
 				end
 				makefile.readline
 			end
+			makefile.close
 		end
 
 	delete_element (element_name: STRING)
@@ -161,7 +158,7 @@ feature {ANY}
 				element_id := converter.name2id (element_name)
 				graph.delete_node (element_id)
 				converter.delete_name (element_name)
-				print(converter.name2id (element_name))
+				print(element_id)
 				print(": deleted%N")
 			else
 				print("Element Not Exists%N")
