@@ -24,7 +24,7 @@ feature {NONE} -- Initialization
 			create predecessor_count.make_empty
 		end
 
-feature {AUTO_TASK}
+feature {AUTO_TASK, TEST_ALGORITHM}
 	-- Cycle Detection with Tarjan Algorithm
 	-- (by finding strongly connected component)
 
@@ -123,7 +123,7 @@ feature {AUTO_TASK}
 
 
 
-feature {AUTO_TASK} -- Topological Sort
+feature {AUTO_TASK, TEST_ALGORITHM} -- Topological Sort
 
 	sorted_list: LINKED_LIST [INTEGER]
 	predecessor_count: ARRAY [INTEGER]

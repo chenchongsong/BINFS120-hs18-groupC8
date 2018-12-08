@@ -222,11 +222,11 @@ feature {ANY}
 			Result := sorted_list_name
 		end
 
-	display
+	display (output_file_name: STRING)
 			-- call the DISPLAYER class
 			-- to generate GraphViz format text file
 		do
-			displayer.to_graphviz_format (graph, converter)
+			displayer.to_graphviz_format (graph, converter, output_file_name)
 		end
 
 feature {NONE}

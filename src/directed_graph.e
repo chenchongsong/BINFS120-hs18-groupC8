@@ -37,7 +37,7 @@ feature {DISPLAYER, ALGORITHM, TEST_DIRECTED_GRAPH}
 			-- corresponding entry will be marked as deleted (true)
 			-- after a node is deleted
 
-feature {DISPLAYER, ALGORITHM, AUTO_TASK, TEST_DIRECTED_GRAPH}
+feature {DISPLAYER, ALGORITHM, AUTO_TASK, TEST_DIRECTED_GRAPH, TEST_ALGORITHM, TEST_DISPLAYER}
 	check_node_existence (node: INTEGER): BOOLEAN
 		require
 			non_negative_node: node >= 0
@@ -65,7 +65,7 @@ feature {DISPLAYER, ALGORITHM, AUTO_TASK, TEST_DIRECTED_GRAPH}
 			end
 		end
 
-feature {AUTO_TASK, TEST_DIRECTED_GRAPH}
+feature {AUTO_TASK, TEST_DIRECTED_GRAPH, TEST_ALGORITHM, TEST_DISPLAYER}
 
 	set_largest_node (new_largest_node: INTEGER)
 			-- append an INTEGER at the end of "nodes" list
@@ -80,8 +80,6 @@ feature {AUTO_TASK, TEST_DIRECTED_GRAPH}
 		require
 			positive_node_id: predecessor > 0 and successor > 0
 			not_self_cycle: predecessor /= successor
-		local
-			list : LINKED_LIST [INTEGER]
 		do
 			successors.item (predecessor).extend (successor)
 		end

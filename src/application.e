@@ -40,7 +40,7 @@ feature {NONE} -- Initialization
 --			--auto_task.add_constraint ("root", "normal")
 --			--auto_task.delete_constraint ("1", "2")
 
-			create makefile.make_open_read("input_makefile")
+			create makefile.make_open_read("input_makefile.txt")
 			auto_task.add_makefile(makefile)
 			topo_result := auto_task.topo_sort
 			print("Topo Sort Resut:%N")
@@ -49,7 +49,7 @@ feature {NONE} -- Initialization
 				print(element_iter.item.out + ", ")
 			end
 			print("%N")
-			auto_task.display
+			auto_task.display ("output_graph.txt")
 		end
 
 end
