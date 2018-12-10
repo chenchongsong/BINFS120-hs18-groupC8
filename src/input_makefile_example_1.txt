@@ -1,0 +1,4 @@
+a.cpp: b.cpp c.cpp d.cpp
+b.cpp: a.cpp c.cpp d.cpp
+c.cpp: a.cpp b.cpp d.cpp
+d.cpp: a.cpp

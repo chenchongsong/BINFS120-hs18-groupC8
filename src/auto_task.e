@@ -46,7 +46,7 @@ feature {ANY}
 		do
 			if not check_element_existence (element_name) then
 				converter.insert_name (element_name)
-				print(converter.name2id (element_name))
+				print(element_name)
 				print(": added%N")
 				graph.set_largest_node (converter.name2id (element_name))
 			else
@@ -67,10 +67,8 @@ feature {ANY}
 					element_id_1 := converter.name2id (element_name_1)
 					element_id_2 := converter.name2id (element_name_2)
 					if element_id_1 /= element_id_2 then
-						print(element_id_1)
-						print(": added as part of constraint%N")
-						print(element_id_2)
-						print(": added as part of constraint%N")
+						print(element_name_1 + " -> " + element_name_2)
+						print(": constraint added%N")
 						graph.add_edge (element_id_1, element_id_2)
 					else
 						print("Self-Loop Not Allowed")
@@ -107,9 +105,13 @@ feature {ANY}
 				loop
 					if word_iter.item.count > 0 then
 						if word_iter.item.ends_with (":") then
-							add_element(word_iter.item.substring(1, word_iter.item.count-1))
+							if not check_element_existence(word_iter.item.substring(1,word_iter.item.count-1)) then
+								add_element(word_iter.item.substring(1, word_iter.item.count-1))
+							end
 						else
-							add_element (word_iter.item)
+							if not check_element_existence (word_iter.item) then
+								add_element (word_iter.item)
+							end
 						end
 					end
 				end
