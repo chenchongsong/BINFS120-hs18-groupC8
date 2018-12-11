@@ -15,9 +15,9 @@ feature {NONE} -- Initialization
 	make
 			-- Initialization for `Current'.
 		do
-			create deleted.make_filled (false, 1, 100)
-			create successors.make_filled(create {LINKED_LIST[INTEGER]}.make, 1, 100)
-			across 1 |..| 100 as predecessor_iter loop
+			create deleted.make_filled (false, 1, 5000)
+			create successors.make_filled(create {LINKED_LIST[INTEGER]}.make, 1, 5000)
+			across 1 |..| 5000 as predecessor_iter loop
 				successors.put (create {LINKED_LIST[INTEGER]}.make, predecessor_iter.item)
 			end
 		end
@@ -81,7 +81,7 @@ feature {AUTO_TASK, TEST_DIRECTED_GRAPH, TEST_ALGORITHM, TEST_DISPLAYER}
 			positive_node_id: predecessor > 0 and successor > 0
 			not_self_cycle: predecessor /= successor
 		do
-			successors.item (predecessor).extend (successor)
+			successors[predecessor].extend (successor)
 		end
 
 	delete_node (node: INTEGER)

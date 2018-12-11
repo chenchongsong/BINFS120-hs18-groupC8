@@ -30,8 +30,8 @@ feature {AUTO_TASK, TEST_ALGORITHM}
 
 	cycle_detection_initialize (graph: DIRECTED_GRAPH)
 		do
-			create dfs_visited.make_filled(false, 1, graph.largest_node)
-			create dfs_in_stack.make_filled(false, 1, graph.largest_node)
+			create dfs_visited.make_filled(false, 1, 5000)
+			create dfs_in_stack.make_filled(false, 1, 5000)
 			create dfs_stack.make
 			create dfs_cycle_elements.make
 		end
@@ -73,9 +73,6 @@ feature {AUTO_TASK, TEST_ALGORITHM}
 			-- recursively using Depth First Search
 			-- if cycle found, return true and print cycle to console
 		do
---			print("DFS: ")
---			print(node)
---			print("%N")
 			dfs_visited[node] := true
 			dfs_stack.extend(node)
 			dfs_in_stack[node] := true
@@ -83,9 +80,6 @@ feature {AUTO_TASK, TEST_ALGORITHM}
 
 			across graph.successors[node] as successor_iter
 			loop
---				print("successor: ")
---				print(successor_iter.item)
---				print("%N")
 				if Result = false then
 					if dfs_in_stack[successor_iter.item] then
 						-- cycle found
@@ -107,7 +101,7 @@ feature {AUTO_TASK, TEST_ALGORITHM}
 
 						Result := true
 					else
-						if not graph.deleted[node] then
+						if not graph.deleted[successor_iter.item] and not dfs_visited[successor_iter.item] then
 							Result := Result or depth_first_search(graph, successor_iter.item)
 						end
 					end

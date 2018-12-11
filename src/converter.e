@@ -16,8 +16,8 @@ feature {NONE} -- Initialization
 			-- Initialization for `Current'.
 		do
 			largest_integer := 0
-			create name2id_table.make(100)
-			create id2name_array.make_filled("", 1, 100)
+			create name2id_table.make(5000)
+			create id2name_array.make_filled("", 1, 5000)
 		ensure
 			largest_integer = 0
 		end

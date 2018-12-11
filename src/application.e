@@ -18,7 +18,10 @@ feature {NONE} -- Initialization
 			-- Run application
 		do
 			--example_1
-			example_2
+			example (2)
+			--example (3)
+			--example (4)
+			--example (5)
 		end
 
 	example_1
@@ -97,14 +100,14 @@ feature {NONE} -- Initialization
 			end
 		end
 
-	example_2
+	example (example_index: INTEGER)
 		local
 			auto_task: AUTO_TASK
 			topo_result: LINKED_LIST [STRING]
 			input_makefile: PLAIN_TEXT_FILE
 		do
 			create auto_task.make
-			create input_makefile.make_open_read("input_makefile_example_1.txt")
+			create input_makefile.make_open_read("input_makefile_example_"+example_index.out+".txt")
 			auto_task.add_makefile(input_makefile)
 			topo_result := auto_task.topo_sort
 			print("Topo Sort Resut:%N")

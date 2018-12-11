@@ -46,8 +46,8 @@ feature {ANY}
 		do
 			if not check_element_existence (element_name) then
 				converter.insert_name (element_name)
-				print(element_name)
-				print(": added%N")
+--				print(element_name)
+--				print(": added%N")
 				graph.set_largest_node (converter.name2id (element_name))
 			else
 				print("Element Already Exists%N")
@@ -67,17 +67,20 @@ feature {ANY}
 					element_id_1 := converter.name2id (element_name_1)
 					element_id_2 := converter.name2id (element_name_2)
 					if element_id_1 /= element_id_2 then
-						print(element_name_1 + " -> " + element_name_2)
-						print(": constraint added%N")
+--						print(element_name_1 + " -> " + element_name_2)
+--						print(": constraint added%N")
 						graph.add_edge (element_id_1, element_id_2)
 					else
-						print("Self-Loop Not Allowed")
+						print(element_name_1 + " -> " + element_name_2)
+						print(": Self-Loop Not Allowed%N")
 					end
 				else
-					print("Constraint Already Exists%N")
+					print(element_name_1 + " -> " + element_name_2)
+					print(": Constraint Already Exists%N")
 				end
 			else
-				print("Element Not Exists%N")
+				print(element_name_1 + " -> " + element_name_2)
+				print(": Element Not Exists%N")
 			end
 		end
 
@@ -88,7 +91,6 @@ feature {ANY}
 		local
 			line: STRING
 			words: LIST [STRING]
-			element_name: STRING
 			element_name_1: STRING
 			element_name_2: STRING
 		do
@@ -99,7 +101,7 @@ feature {ANY}
 			until
 				makefile.exhausted
 			loop
-				line := makefile.last_string
+				line := makefile.last_string.out
 				words := line.split (' ')
 				across words as word_iter
 				loop
@@ -125,7 +127,7 @@ feature {ANY}
 			until
 				makefile.exhausted
 			loop
-				line := makefile.last_string
+				line := makefile.last_string.out
 				words := line.split (' ')
 				if words.count > 0 then
 					if words.first.ends_with (":") then
@@ -137,7 +139,11 @@ feature {ANY}
 							words.exhausted
 						loop
 							element_name_2 := words.item
-							add_constraint(element_name_1, element_name_2)
+							if words.item.count > 0 then
+								add_constraint(element_name_2, element_name_1)
+
+								-- pay attention to the order of element_name_2 and element_name_1 here
+							end
 							words.forth
 						end
 					else

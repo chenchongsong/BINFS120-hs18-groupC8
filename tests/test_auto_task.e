@@ -86,18 +86,17 @@ feature -- Test routines
 			output_file.readline
 			assert ("line1", output_file.last_string.is_equal ("digraph output_graph {"))
 			output_file.readline
-			assert ("line2", output_file.last_string.is_equal ("    event1 -> { event2 event3 }"))
+			assert ("line2", output_file.last_string.is_equal ("    event1 -> { }"))
 			output_file.readline
-			assert ("line3", output_file.last_string.is_equal ("    event2 -> { }"))
+			assert ("line3", output_file.last_string.is_equal ("    event2 -> { event1 }"))
 			output_file.readline
-			assert ("line4", output_file.last_string.is_equal ("    event3 -> { }"))
+			assert ("line4", output_file.last_string.is_equal ("    event3 -> { event1 }"))
 			output_file.readline
 			assert ("line5", output_file.last_string.is_equal ("    event4 -> { }"))
 			output_file.readline
 			assert ("line6", output_file.last_string.is_equal ("}"))
 
 			-- tear down
-			input_makefile.close
 			input_makefile.delete
 			output_file.close
 			output_file.delete
