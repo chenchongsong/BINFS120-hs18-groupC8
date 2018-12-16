@@ -17,10 +17,10 @@ feature {NONE} -- Initialization
 	make
 			-- Run application
 		do
-			example_1
+			--example_1
 			--example (2)
 			--example (3)
-			--example (4)
+			example (4)
 			--example (5)
 		end
 
@@ -89,7 +89,7 @@ feature {NONE} -- Initialization
 					print("%N")
 				end
 				if choice.is_equal ("dis") then
-					auto_task.display ("outptu_graph_1.txt")
+					auto_task.display ("output_graph.txt")
 				end
 				if not (choice.is_equal ("ae") or choice.is_equal ("ac") or
 						choice.is_equal ("de") or choice.is_equal ("dc") or
