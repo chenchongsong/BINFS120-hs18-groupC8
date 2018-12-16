@@ -17,8 +17,8 @@ feature {NONE} -- Initialization
 	make
 			-- Run application
 		do
-			--example_1
-			example (2)
+			example_1
+			--example (2)
 			--example (3)
 			--example (4)
 			--example (5)
